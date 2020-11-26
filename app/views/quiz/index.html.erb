@@ -14,7 +14,7 @@
   </div>
   
    <script>
-   //クイズの内容文
+//クイズの内容文
 const quiz = [
   {
     question: '問１：戸建住宅を建てるとき、次の中で最も早く行われる工事はどれでしょうか？',
@@ -53,34 +53,34 @@ const quiz = [
     correct: '約3400万円'
   }
 ];
+//#クイズの内容文
+
 const quizLength = quiz.length;
 let quizIndex = 0;
-let score = 0;  //スコアのカウンター
-
-// getElementsByTagNameでタグを指定、配列で書き換える場所を指定している
-const $button = document.getElementsByTagName('button');  //毎度getEle~と表示するのは面倒なので変数を定義して見易くまとめる
-//HTMLのオブジェクトを取ってくる場合は「$」を先頭にいれる慣習
-const buttonLength = $button.length;  //ボタンの回数分処理をしたいので数値化
+let score = 0;
 
 
-//定数の文字列をHTMLに反映させる・クイズの問題文、選択肢を定義
-const setupQuiz = () => {  //質問を各表示させる工程を関数でまとめwhileでリファクタリング
-    // getElementByIdでhtmlの特定(id)のタグを指定、textContentで内容を書き換えている
+const $button = document.getElementsByTagName('button');
+
+const buttonLength = $button.length;
+
+const setupQuiz = () => {
+ 
   document.getElementById('js-question').textContent = quiz[quizIndex].question;
-  let buttonIndex = 0;  //カウンターを付ける
-  while(buttonIndex < buttonLength){  //JavaScriptでの繰り返し処理(HTMLのeachメソッドに近い) buttonIndex < buttonLengthであれば下記の命令を実行
-    $button[buttonIndex].textContent = quiz[quizIndex].answers[buttonIndex];  //ここに命令内容
-    buttonIndex++;  //カウンターがループにならない様に変数に処理をする度に１を足す
+  let buttonIndex = 0;
+  while(buttonIndex < buttonLength){
+    $button[buttonIndex].textContent = quiz[quizIndex].answers[buttonIndex]; 
+    buttonIndex++;
   }
 };
-setupQuiz(); //定義した関数は呼ばないと反映されないので呼び出す。
+setupQuiz();
 
 //ボタンをクリックしたら正誤判定
-const clickHandler = (e) => {  //引数でこの関数にeを引き継がせておく
+const clickHandler = (e) => {
   const NumberQuestions = quizIndex + 2;
-  if(quiz[quizIndex].correct === e.target.textContent){  //targetでクリックした場所(ここではボタンの配列)を指定している
+  if(quiz[quizIndex].correct === e.target.textContent){
     window.alert('正解!\n\n'+ NumberQuestions + '問目に進みます');
-    score++;  //カウント
+    score++;
   } else {
     window.alert('不正解...');
     window.alert('【正解】\n'+ quiz[quizIndex].correct + '\n\n' + NumberQuestions + '問目に進みます');
@@ -88,8 +88,8 @@ const clickHandler = (e) => {  //引数でこの関数にeを引き継がせて�
 
   quizIndex++;
 
-    if(quizIndex < quizLength){  //問題数がまだあれば下記を実行
-      setupQuiz();  //次の問題を作成・定義
+    if(quizIndex < quizLength){
+      setupQuiz();
     }
 };
 
