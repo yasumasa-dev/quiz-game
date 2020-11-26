@@ -1,0 +1,140 @@
+  <div class="container">
+    
+    <div id="js-question" class="mt-3 alert alert-primary" role="alert">
+      A simple primary alert—check it out!
+    </div>
+    
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-primary">Primary</button>
+      <button type="button" class="ml-1 btn btn-primary">Primary</button>
+      <button type="button" class="ml-1 btn btn-primary">Primary</button>
+      <button type="button" class="ml-1 btn btn-primary">Primary</button>
+    </div>
+    
+  </div>
+  
+   <script>
+   //クイズの内容文
+const quiz = [
+  {
+    question: '問１：戸建住宅を建てるとき、次の中で最も早く行われる工事はどれでしょうか？',
+    answers: ['外壁工事',
+             '基礎工事',
+             '防蟻工事',
+             '屋根工事'],
+    correct: '基礎工事'
+  },{
+    question: '問２：工事の途中でコンセントの位置をやはり変えたいです。どの工事までなら比較的簡単に変更できるでしょうか？',
+    answers: ['断熱工事',
+             'クロス工事',
+             '設備工事',
+             'フロア工事'],
+    correct: '断熱工事'
+  },{
+    question: '問３：一つの家作りに関わる業者は約何社でしょうか？',
+    answers: ['3社以下',
+             '4~7社',
+             '7~10社',
+             '10社以上'],
+    correct: '10社以上'
+  },{
+    question: '問４：3000万円の住宅ローンを組みました。変動金利0.625％、35年ローンなら初年度の月々の支払いはいくらでしょうか？',
+    answers: ['約７万円',
+             '約８万円',
+             '約９万円',
+             '約１０万円'],
+    correct: '約８万円'
+  },{
+    question: '問５：初年度の月々の支払いが９万円でした。変動金利0.625％、35年ローンの場合、合計いくらのローンを組んだでしょうか？',
+    answers: ['約3100万円',
+             '約3200万円',
+             '約3300万円',
+             '約3400万円'],
+    correct: '約3400万円'
+  }
+];
+const quizLength = quiz.length;
+let quizIndex = 0;
+let score = 0;  //スコアのカウンター
+
+// getElementsByTagNameでタグを指定、配列で書き換える場所を指定している
+const $button = document.getElementsByTagName('button');  //毎度getEle~と表示するのは面倒なので変数を定義して見易くまとめる
+//HTMLのオブジェクトを取ってくる場合は「$」を先頭にいれる慣習
+const buttonLength = $button.length;  //ボタンの回数分処理をしたいので数値化
+
+
+//定数の文字列をHTMLに反映させる・クイズの問題文、選択肢を定義
+const setupQuiz = () => {  //質問を各表示させる工程を関数でまとめwhileでリファクタリング
+    // getElementByIdでhtmlの特定(id)のタグを指定、textContentで内容を書き換えている
+  document.getElementById('js-question').textContent = quiz[quizIndex].question;
+  let buttonIndex = 0;  //カウンターを付ける
+  while(buttonIndex < buttonLength){  //JavaScriptでの繰り返し処理(HTMLのeachメソッドに近い) buttonIndex < buttonLengthであれば下記の命令を実行
+    $button[buttonIndex].textContent = quiz[quizIndex].answers[buttonIndex];  //ここに命令内容
+    buttonIndex++;  //カウンターがループにならない様に変数に処理をする度に１を足す
+  }
+};
+setupQuiz(); //定義した関数は呼ばないと反映されないので呼び出す。
+
+//ボタンをクリックしたら正誤判定
+const clickHandler = (e) => {  //引数でこの関数にeを引き継がせておく
+  const NumberQuestions = quizIndex + 2;
+  if(quiz[quizIndex].correct === e.target.textContent){  //targetでクリックした場所(ここではボタンの配列)を指定している
+    window.alert('正解!\n\n'+ NumberQuestions + '問目に進みます');
+    score++;  //カウント
+  } else {
+    window.alert('不正解...');
+    window.alert('【正解】\n'+ quiz[quizIndex].correct + '\n\n' + NumberQuestions + '問目に進みます');
+  }
+
+  quizIndex++;
+
+    if(quizIndex < quizLength){  //問題数がまだあれば下記を実行
+      setupQuiz();  //次の問題を作成・定義
+    }
+};
+
+let handlerIndex = 0;
+while(handlerIndex < buttonLength){
+  //最終問題前の案内
+  $button[handlerIndex].addEventListener('click', (e) => { 
+    if(quizLength == quizIndex + 2){
+      const NumberQuestions = quizIndex + 2;
+      if(quiz[quizIndex].correct === e.target.textContent){
+        window.alert('正解!\n\n'+ NumberQuestions + '問目に進みます' + '\n次が最終問題です');
+        score++;
+      } else {
+        window.alert('不正解...');
+        window.alert('【正解】\n'+ quiz[quizIndex].correct + '\n\n' + NumberQuestions + '問目に進みます'
+        + '\n次が最終問題です');
+      }
+      quizIndex++;
+  
+      if(quizIndex < quizLength){  
+        setupQuiz();
+      } 
+  //#最終問題前の案内
+  //最終問題の場合の案内
+  } else if(quizLength == quizIndex + 1){
+    if(quiz[quizIndex].correct === e.target.textContent){
+      window.alert('正解!\n\n結果は...');
+      score++;
+    } else {
+      window.alert('不正解...');
+      window.alert('【正解】\n'+ quiz[quizIndex].correct);
+    }
+    quizIndex++;
+
+    if(quizIndex < quizLength){
+      setupQuiz();
+    } else {
+    window.alert('あなたの正解数は' + quizLength+ '問中' + score  + '問です');
+  }
+  //#最終問題の場合の案内
+  }else{
+    clickHandler(e);
+  }
+  });
+  handlerIndex++;
+}
+
+   </script>
