@@ -75,7 +75,7 @@ const setupQuiz = () => {
 };
 setupQuiz();
 
-//ボタンをクリックしたら正誤判定
+//ボタンのクリックから正誤判定
 const clickHandler = (e) => {
   const NumberQuestions = quizIndex + 2;
   if(quiz[quizIndex].correct === e.target.textContent){
@@ -113,6 +113,7 @@ while(handlerIndex < buttonLength){
         setupQuiz();
       } 
   //#最終問題前の案内
+
   //最終問題の場合の案内
   } else if(quizLength == quizIndex + 1){
     if(quiz[quizIndex].correct === e.target.textContent){
